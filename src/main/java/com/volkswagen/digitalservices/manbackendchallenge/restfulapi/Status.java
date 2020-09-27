@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public final class Status {
+    public static final String OK_BODY = "status ok";
 
-    @GetMapping("/test")
-    public ResponseEntity handleStatus() {
-        return ResponseEntity.ok("status ok");
+    @GetMapping(Paths.STATUS)
+    public ResponseEntity getValue() {
+        return ResponseEntity.ok(OK_BODY);
     }
 }
