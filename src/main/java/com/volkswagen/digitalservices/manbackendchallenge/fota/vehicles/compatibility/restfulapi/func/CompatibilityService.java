@@ -1,6 +1,6 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.Paths;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

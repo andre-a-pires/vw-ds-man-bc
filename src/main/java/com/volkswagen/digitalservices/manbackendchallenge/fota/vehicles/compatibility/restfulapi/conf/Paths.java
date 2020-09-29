@@ -1,4 +1,4 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf;
 
 public final class Paths {
     public static final String VEHICLES = "/fota/vehicles";

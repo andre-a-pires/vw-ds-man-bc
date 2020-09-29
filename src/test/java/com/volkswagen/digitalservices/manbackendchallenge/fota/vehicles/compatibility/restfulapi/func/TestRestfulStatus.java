@@ -1,7 +1,6 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.Paths;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func.CompatibilityService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
