@@ -1,14 +1,18 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-@ConfigurationProperties
+@Component
+@ConfigurationProperties("daemon")
 public class DaemonConfiguration {
-    @Value("$(daemon.folder_sweeping_path)")
-    private String path;
+    private String folder;
 
-    public String getPath() {
-        return path;
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
     }
 }

@@ -1,6 +1,8 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public final class CompatibilityService {
     public static final String OK_BODY = "status ok!";
+
+    @Autowired
+    private DaemonConfiguration config;
 
     @GetMapping(Paths.VEHICLES + Paths.VEHICLES_STATUS)
     public ResponseEntity getValue() {

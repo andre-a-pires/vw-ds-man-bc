@@ -1,5 +1,6 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ class TestRestfulStatus {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
+
+	@Autowired
+	private DaemonConfiguration config;
 
 	@Autowired
 	private CompatibilityService compatibilityServiceController;

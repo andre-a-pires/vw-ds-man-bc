@@ -4,26 +4,22 @@ import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatib
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class DaemonService {
+@Service
+public final class DaemonService {
     static final Logger LOGGER = LoggerFactory.getLogger(DaemonService.class);
 
     @Autowired
     private DaemonConfiguration config;
 
-    private DaemonService() {}
-
-    public static DaemonService get() {
-        return new DaemonService();
-    }
-
     public void run() {
         LOGGER.info("Daemon starting");
 
-        LOGGER.info("Daemon folder-sweeping path: " /*+ config.getPath()*/);
+        LOGGER.info("Daemon folder-sweeping path: " + "not found!");
 
         while (true) {
             try {
