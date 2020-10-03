@@ -18,5 +18,5 @@ clean: ## cleans jar with gradle
 docker-build: ## builds docker image with name vw-ds/man-backend-challenge
 	docker build --build-arg JAR_FILE=build/libs/man-backend-challenge-0.0.1.jar -t vw-ds/man-backend-challenge .
 
-docker-run: ## runs docker image vw-ds/man-backend-challenge
-	docker run -p 8080:8080 vw-ds/man-backend-challenge
+docker-run: ## runs docker image vw-ds/man-backend-challenge alongside postgresql image
+	docker-compose up

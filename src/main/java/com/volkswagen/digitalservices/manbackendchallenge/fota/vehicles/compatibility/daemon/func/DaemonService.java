@@ -1,10 +1,14 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.func;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence.FeatureEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -39,6 +43,15 @@ public final class DaemonService {
     private static CompletableFuture<Void> getCompletableFuture() {
         return CompletableFuture.runAsync(() -> {
             LOGGER.info("Folder-sweeping iteration start");
+
+            // test Hibernate
+            EntityManagerFactory sessionFactory = Persistence.createEntityManagerFactory("Feature");
+            EntityManager entityManager = sessionFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+            entityManager.persist( new FeatureEntity( "Our very first feature!!!"));
+            entityManager.persist( new FeatureEntity( "Our very second feature!!!"));
+            entityManager.getTransaction().commit();
+            entityManager.close();
 
             // csv files to process
             if (false) {
