@@ -3,7 +3,6 @@ package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compati
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
@@ -13,13 +12,17 @@ import java.util.concurrent.ExecutionException;
 public final class DaemonService {
     static final Logger LOGGER = LoggerFactory.getLogger(DaemonService.class);
 
-    @Autowired
     private DaemonConfiguration config;
+
+    // FIXME: DaemonConfiguration instance should be injected!!!
+    public DaemonService(DaemonConfiguration config) {
+        this.config = config;
+    }
 
     public void run() {
         LOGGER.info("Daemon starting");
 
-        LOGGER.info("Daemon folder-sweeping path: " + "not found!");
+        LOGGER.info("Daemon folder-sweeping path: " + config.getFolder());
 
         while (true) {
             try {
