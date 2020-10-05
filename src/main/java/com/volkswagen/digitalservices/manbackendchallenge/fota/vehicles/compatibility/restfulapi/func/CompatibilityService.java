@@ -1,7 +1,7 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.CodeService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.VehicleCompatibilityService;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths.*;
+
 @RestController
 @RequestMapping(Paths.VEHICLES)
 public final class CompatibilityService {
@@ -20,37 +22,38 @@ public final class CompatibilityService {
     public static final String OK_BODY = "status ok!";
 
     @Autowired
-    CodeService codeService;
+    VehicleCompatibilityService service;
 
     @Autowired
     private DaemonConfiguration config;
 
-    @GetMapping(Paths.VEHICLES_STATUS)
+    @GetMapping(VEHICLES_STATUS)
     public ResponseEntity getValue() {
+        LOGGER.info("New request on " + Paths.VEHICLES + VEHICLES_STATUS);
         return ResponseEntity.ok(OK_BODY);
     }
 
-    @GetMapping("/{vin}" + Paths.VEHICLES_INSTALLABLE)
+    @GetMapping("/{vin}" + VEHICLES_INSTALLABLE)
     public ResponseEntity getInstallable(@PathVariable String vin) {
+        LOGGER.info("New request on " + Paths.VEHICLES + "/" + vin + VEHICLES_INSTALLABLE);
+
+        if (!service.vehicleExists(vin)) {
+            LOGGER.info("Requested vehicle with vin=" + vin + " does not exist");
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok("Vehicles installable request with vin=" + vin);
     }
 
-    @GetMapping("/{vin}" + Paths.VEHICLES_INCOMPATIBLE)
+    @GetMapping("/{vin}" + VEHICLES_INCOMPATIBLE)
     public ResponseEntity getIncompatible(@PathVariable String vin) {
+        LOGGER.info("New request on " + Paths.VEHICLES + "/" + vin + VEHICLES_INCOMPATIBLE);
+
+        if (!service.vehicleExists(vin)) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok("Vehicles incompatible request with vin=" + vin);
     }
 
-    // test purposes
-//    @GetMapping("/test")
-//    public ResponseEntity testPersistence() {
-//        featureService.add(new Feature( "Our very first feature!!!"));
-//        featureService.add(new Feature( "Our very second feature!!!"));
-//
-//        Feature feature = featureService.getFeatureById(1l)
-//                .orElseThrow(() -> new RuntimeException("Feature 1l not found!!!"));
-//
-//        LOGGER.info("Feature found!!!!!!!!!!!!!!!!!!!!!");
-//
-//        return ResponseEntity.ok("");
-//    }
 }

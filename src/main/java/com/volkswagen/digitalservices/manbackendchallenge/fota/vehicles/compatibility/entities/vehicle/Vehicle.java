@@ -33,4 +33,8 @@ public class Vehicle {
         this.creationDateTime = LocalDateTime.now();
     }
 
+    public String getVin() {
+        return this.vin;
+    }
+
 }
