@@ -1,9 +1,7 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.func.DaemonService;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence.Feature;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence.FeatureService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.CodeService;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +20,7 @@ public final class CompatibilityService {
     public static final String OK_BODY = "status ok!";
 
     @Autowired
-    FeatureService featureService;
+    CodeService codeService;
 
     @Autowired
     private DaemonConfiguration config;

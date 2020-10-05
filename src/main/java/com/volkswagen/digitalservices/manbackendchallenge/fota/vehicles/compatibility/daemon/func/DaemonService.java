@@ -1,14 +1,12 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.func;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence.Feature;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence.FeatureService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.CodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.transaction.Transactional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -19,7 +17,7 @@ public class DaemonService {
     private DaemonConfiguration config;
 
     @Autowired
-    FeatureService featureService;
+    CodeService codeService;
 
     // FIXME: DaemonConfiguration instance should be injected!!!
     public DaemonService(DaemonConfiguration config) {
@@ -60,4 +58,5 @@ public class DaemonService {
             LOGGER.info("Folder-sweeping iteration finished");
         });
     }
+
 }

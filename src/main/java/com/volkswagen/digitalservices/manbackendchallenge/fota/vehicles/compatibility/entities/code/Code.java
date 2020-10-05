@@ -1,27 +1,29 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="fota_vehicles_compatibility_feature")
-public class Feature {
+@Inheritance
+@DiscriminatorColumn(name="code_type")
+@Table(name="fota_vehicles_compatibility_code")
+public abstract class Code {
     @Id
     @Column
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String code;
+    private String value;
 
     @Column(nullable = false)
     private LocalDateTime creationDateTime;
 
     // ORM usage
-    protected Feature() {}
+    protected Code() {}
 
-    public Feature(String code) {
-        this.code = code;
+    public Code(String value) {
+        this.value = value;
         this.creationDateTime = LocalDateTime.now();
     }
 
@@ -29,8 +31,8 @@ public class Feature {
         return this.id;
     }
 
-    public String getCode() {
-        return this.code;
+    public String getValue() {
+        return this.value;
     }
 
     public LocalDateTime getCreationDate() {
@@ -41,8 +43,8 @@ public class Feature {
         this.id = id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setValue(String code) {
+        this.value = code;
     }
 
     public void setCreationDateTime(LocalDateTime creationDateTime) {
@@ -53,9 +55,10 @@ public class Feature {
     public String toString() {
         return new StringBuilder().append("FeatureEntity[")
                 .append("id=").append(this.getId())
-                .append(", code=").append(this.getCode())
+                .append(", value=").append(this.getValue())
                 .append(", creationDateTime=").append(this.getCreationDate())
                 .append("]")
                 .toString();
     }
+
 }

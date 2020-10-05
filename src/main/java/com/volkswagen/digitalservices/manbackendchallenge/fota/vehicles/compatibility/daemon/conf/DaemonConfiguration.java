@@ -15,4 +15,5 @@ public class DaemonConfiguration {
     public void setFolder(String folder) {
         this.folder = folder;
     }
+
 }
