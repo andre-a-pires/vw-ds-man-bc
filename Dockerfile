@@ -1,8 +1,4 @@
-FROM openjdk:11
-ARG JAR_FILE=target/*.jar
+FROM openjdk:11-jre
+ARG JAR_FILE=build/libs/man-backend-challenge-0.0.1.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
-FROM library/postgres
-ENV POSTGRES_USER admin
-ENV POSTGRES_PASSWORD 8QYRjyZGxM!UyT^3KhGX
-ENV POSTGRES_DB fota

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="fota_vehicles_compatibility_feature")
-public class FeatureEntity {
+public class Feature {
     @Id
     @Column
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -18,9 +18,9 @@ public class FeatureEntity {
     private LocalDateTime creationDateTime;
 
     // ORM usage
-    public FeatureEntity() {}
+    protected Feature() {}
 
-    public FeatureEntity(String code) {
+    public Feature(String code) {
         this.code = code;
         this.creationDateTime = LocalDateTime.now();
     }

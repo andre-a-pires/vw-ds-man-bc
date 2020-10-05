@@ -1,12 +1,18 @@
 version: "3.8"
 services:
-  app:
-    image: vw-ds/man-backend-challenge:latest
-    ports:
-      - 8080:8080
-  database:
-    image: postgres:alpine
+  db:
+    image: postgres:13-alpine
     restart: always
     ports:
       - 5432:5432
-
+    environment:
+      POSTGRES_DB: fota
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 8QYRjyZGxMUyT3KhGX
+  app:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db

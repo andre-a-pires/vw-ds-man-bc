@@ -19,4 +19,7 @@ docker-build: ## builds docker image with name vw-ds/man-backend-challenge
 	docker build --build-arg JAR_FILE=build/libs/man-backend-challenge-0.0.1.jar -t vw-ds/man-backend-challenge .
 
 docker-run: ## runs docker image vw-ds/man-backend-challenge alongside postgresql image
-	docker-compose up
+	docker-compose up -d
+
+docker-build-run: ## always rebuilds images
+	docker-compose up --build

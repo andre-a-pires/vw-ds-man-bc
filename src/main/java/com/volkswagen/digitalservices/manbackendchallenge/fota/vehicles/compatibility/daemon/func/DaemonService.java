@@ -1,22 +1,25 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.func;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence.FeatureEntity;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence.Feature;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.persistence.FeatureService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.transaction.Transactional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-@Service
-public final class DaemonService {
+@Controller
+public class DaemonService {
     static final Logger LOGGER = LoggerFactory.getLogger(DaemonService.class);
 
     private DaemonConfiguration config;
+
+    @Autowired
+    FeatureService featureService;
 
     // FIXME: DaemonConfiguration instance should be injected!!!
     public DaemonService(DaemonConfiguration config) {
@@ -25,7 +28,6 @@ public final class DaemonService {
 
     public void run() {
         LOGGER.info("Daemon starting");
-
         LOGGER.info("Daemon folder-sweeping path: " + config.getFolder());
 
         while (true) {
@@ -40,18 +42,9 @@ public final class DaemonService {
         }
     }
 
-    private static CompletableFuture<Void> getCompletableFuture() {
+    private CompletableFuture<Void> getCompletableFuture() {
         return CompletableFuture.runAsync(() -> {
             LOGGER.info("Folder-sweeping iteration start");
-
-            // test Hibernate
-            EntityManagerFactory sessionFactory = Persistence.createEntityManagerFactory("Feature");
-            EntityManager entityManager = sessionFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            entityManager.persist( new FeatureEntity( "Our very first feature!!!"));
-            entityManager.persist( new FeatureEntity( "Our very second feature!!!"));
-            entityManager.getTransaction().commit();
-            entityManager.close();
 
             // csv files to process
             if (false) {

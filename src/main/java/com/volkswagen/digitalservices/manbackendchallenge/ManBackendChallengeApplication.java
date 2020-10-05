@@ -8,6 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class ManBackendChallengeApplication {
+
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(ManBackendChallengeApplication.class, args);
 		DaemonConfiguration config = context.getBean(DaemonConfiguration.class);
