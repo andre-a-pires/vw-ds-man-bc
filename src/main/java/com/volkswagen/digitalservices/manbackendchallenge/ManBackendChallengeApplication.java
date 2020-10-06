@@ -1,17 +1,30 @@
 package com.volkswagen.digitalservices.manbackendchallenge;
 
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.func.DaemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
+@EnableAsync
 public class ManBackendChallengeApplication {
+
+	@Autowired
+	DaemonService daemon;
+
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(ManBackendChallengeApplication.class, args);
-		DaemonConfiguration config = context.getBean(DaemonConfiguration.class);
-		new DaemonService(config).run();
+		SpringApplication.run(ManBackendChallengeApplication.class, args);
+		// ConfigurableApplicationContext context =
+//		DaemonConfiguration config = context.getBean(DaemonConfiguration.class);
+//		new DaemonService(config).run();
+	}
+
+	@Bean
+	public ApplicationRunner startDaemon() {
+		return args -> daemon.run();
 	}
 
 }

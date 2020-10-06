@@ -5,6 +5,7 @@ import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatib
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 
 import java.util.concurrent.CompletableFuture;
@@ -14,16 +15,13 @@ import java.util.concurrent.ExecutionException;
 public class DaemonService {
     static final Logger LOGGER = LoggerFactory.getLogger(DaemonService.class);
 
+    @Autowired
     private DaemonConfiguration config;
 
     @Autowired
-    CodeService codeService;
+    private CodeService codeService;
 
-    // FIXME: DaemonConfiguration instance should be injected!!!
-    public DaemonService(DaemonConfiguration config) {
-        this.config = config;
-    }
-
+    @Async
     public void run() {
         LOGGER.info("Daemon starting");
         LOGGER.info("Daemon folder-sweeping path: " + config.getFolder());
@@ -32,7 +30,6 @@ public class DaemonService {
             try {
                 getCompletableFuture().get();
             } catch (InterruptedException e) {
-                e.printStackTrace();
                 LOGGER.error("Daemon folder-sweeping interrupted", e);
             } catch (ExecutionException e) {
                 LOGGER.error("Daemon folder-sweeping exception", e);
