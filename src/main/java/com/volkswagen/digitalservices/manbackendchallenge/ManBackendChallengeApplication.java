@@ -17,9 +17,6 @@ public class ManBackendChallengeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ManBackendChallengeApplication.class, args);
-		// ConfigurableApplicationContext context =
-//		DaemonConfiguration config = context.getBean(DaemonConfiguration.class);
-//		new DaemonService(config).run();
 	}
 
 	@Bean
