@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 @Inheritance
 @DiscriminatorColumn(name="code_type")
-@Table(name="fota_vehicles_compatibility_code")
+@Table(name="compatibility_code")
 public abstract class Code {
     @Id
     @Column

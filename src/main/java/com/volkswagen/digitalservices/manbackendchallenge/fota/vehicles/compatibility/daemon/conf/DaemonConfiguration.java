@@ -13,7 +13,7 @@ public class DaemonConfiguration {
         return input_dir;
     }
 
-    public String getProcessedDir() {
+    public String getArchiveDir() {
         return archive_dir;
     }
 

@@ -19,8 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -39,44 +38,36 @@ public class DaemonService {
 
     private String sweepingPath;
 
+    private ReentrantLock mutex = new ReentrantLock();
+
     @Async
     public void run() {
         LOGGER.info("Daemon starting");
         sweepingPath = config.getInputDir();
         LOGGER.info("Daemon folder-sweeping path: " + sweepingPath);
 
-        while (true) {
-            try {
-                getCompletableFuture().get();
-            } catch (InterruptedException e) {
-                LOGGER.warn("Daemon folder-sweeping interrupted. App might have been shutdown");
-            } catch (ExecutionException e) {
-                LOGGER.error("Daemon folder-sweeping exception", e);
-            }
-        }
-    }
 
-    private CompletableFuture<Void> getCompletableFuture() {
-        return CompletableFuture.runAsync(() -> {
+
+        while (true) {
             LOGGER.debug("Folder-sweeping iteration start");
 
-            try (Stream<Path> paths = Files.walk(Paths.get(sweepingPath))) {
+            try (Stream<Path> paths = Files.walk(Paths.get(sweepingPath), 1)) {
                 paths.filter(isCodeFile)
-                        .forEach(path -> {
-                                parseAndPersistCodeFile.accept(path);
-                                moveProcessedCodeFile.accept(path);});
+                        .forEach(handleCodeFile);
             } catch (IOException e) {
                 LOGGER.error("Daemon folder walking failed", e);
             }
 
             LOGGER.debug("Folder-sweeping iteration finished");
-        });
+        }
     }
+
+
 
     private final Predicate<Path> isCodeFile = path -> {
         String fileName = path.getFileName().toString();
 
-        return fileName.endsWith(".csv") &&
+        return ! Files.isDirectory(path) && fileName.endsWith(".csv") &&
                 (fileName.startsWith(SOFTWARE_CODE_FILE_NAME_PREFIX)
                         || fileName.startsWith(HARDWARE_CODE_FILE_NAME_PREFIX));
     };
@@ -125,14 +116,20 @@ public class DaemonService {
     }
 
     private Consumer<Path> moveProcessedCodeFile = sourcePath -> {
-        String fileName = sourcePath.getFileName().toString();
-        Path archivePath = Path.of(config.getProcessedDir().concat("/").concat(fileName));
+        Path archivePath = Path.of(config.getArchiveDir());
 
         try {
-            Files.move(sourcePath, archivePath);
+            Files.move(sourcePath, archivePath.resolve(sourcePath.getFileName()));
         } catch (IOException e) {
-            LOGGER.error("Daemon could not move processed code file from " + sourcePath.toString() + " to " + archivePath);
+            LOGGER.error("Daemon could not move processed code file from " + sourcePath.toString() + " to " + archivePath, e);
         }
+    };
+
+    private Consumer<Path> handleCodeFile = path -> {
+        mutex.lock();
+        parseAndPersistCodeFile.accept(path);
+        moveProcessedCodeFile.accept(path);
+        mutex.unlock();
     };
 
 }
