@@ -10,7 +10,7 @@ public class CodeService {
     @Autowired
     CodeRepository repository;
 
-    public void add(Code code) {
+    public void persist(Code code) {
         repository.save(code);
     }
 
