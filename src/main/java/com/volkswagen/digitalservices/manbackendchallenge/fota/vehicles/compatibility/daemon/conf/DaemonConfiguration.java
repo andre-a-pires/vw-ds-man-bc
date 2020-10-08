@@ -6,14 +6,23 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("daemon")
 public class DaemonConfiguration {
-    private String folder;
+    private String input_dir;
+    private String archive_dir;
 
-    public String getFolder() {
-        return folder;
+    public String getInputDir() {
+        return input_dir;
     }
 
-    public void setFolder(String folder) {
-        this.folder = folder;
+    public String getProcessedDir() {
+        return archive_dir;
+    }
+
+    public void setInputDir(String value) {
+        this.input_dir = value;
+    }
+
+    public void setArchiveDir(String value) {
+        this.archive_dir = value;
     }
 
 }

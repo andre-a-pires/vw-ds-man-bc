@@ -28,7 +28,6 @@ import java.util.stream.Stream;
 @Controller
 public class DaemonService {
     static final Logger LOGGER = LoggerFactory.getLogger(DaemonService.class);
-
     static final String SOFTWARE_CODE_FILE_NAME_PREFIX = "soft_";
     static final String HARDWARE_CODE_FILE_NAME_PREFIX = "hard_";
 
@@ -43,9 +42,7 @@ public class DaemonService {
     @Async
     public void run() {
         LOGGER.info("Daemon starting");
-
-        sweepingPath = System.getProperty("user.dir") + "/" + config.getFolder();
-
+        sweepingPath = config.getInputDir();
         LOGGER.info("Daemon folder-sweeping path: " + sweepingPath);
 
         while (true) {
@@ -60,39 +57,28 @@ public class DaemonService {
     }
 
     private CompletableFuture<Void> getCompletableFuture() {
-
         return CompletableFuture.runAsync(() -> {
             LOGGER.debug("Folder-sweeping iteration start");
 
-
             try (Stream<Path> paths = Files.walk(Paths.get(sweepingPath))) {
                 paths.filter(isCodeFile)
-                        .forEach(parseAndPersistCodeFile);
+                        .forEach(path -> {
+                                parseAndPersistCodeFile.accept(path);
+                                moveProcessedCodeFile.accept(path);});
             } catch (IOException e) {
                 LOGGER.error("Daemon folder walking failed", e);
             }
 
-            // csv files to process
-            if (false) {
-                LOGGER.info("Processing soft and hard codes folder");
-            } else {
-                LOGGER.info("No code files to process, thread taking a nap");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    LOGGER.error("error trying to postpone next sweeping iteration", e);
-                }
-            }
             LOGGER.debug("Folder-sweeping iteration finished");
         });
     }
 
     private final Predicate<Path> isCodeFile = path -> {
-        Path fileName = path.getFileName();
+        String fileName = path.getFileName().toString();
 
         return fileName.endsWith(".csv") &&
-                ( fileName.getFileName().startsWith(SOFTWARE_CODE_FILE_NAME_PREFIX)
-                || fileName.getFileName().startsWith(HARDWARE_CODE_FILE_NAME_PREFIX) );
+                (fileName.startsWith(SOFTWARE_CODE_FILE_NAME_PREFIX)
+                        || fileName.startsWith(HARDWARE_CODE_FILE_NAME_PREFIX));
     };
 
     private Consumer<Path> parseAndPersistCodeFile = path -> {
@@ -101,11 +87,12 @@ public class DaemonService {
                 Code code = null;
                 // FIXME: chained try blocks. look for try with default exception handling with straight syntax
                 try {
-                    code = createCodeInstance(path.getFileName(), reader.getLinesRead(), line);
+                    code = createCodeInstance(path.getFileName().toString(), line);
                 } catch (InvalidCodeStructureException e) {
                     LOGGER.error("Daemon csv file error parsing and persisting values");
                 }
-                codeService.persist(code);});
+                codeService.persist(code);
+            });
         } catch (FileNotFoundException e) {
             LOGGER.error("Daemon cvs file opening error");
         } catch (IOException e) {
@@ -114,8 +101,8 @@ public class DaemonService {
 
     };
 
-    private Code createCodeInstance(Path fileName, long currentLine, String[] line) throws InvalidCodeStructureException {
-        if (! CodeFileValidator.isValidLine(line)) {
+    private Code createCodeInstance(String fileName, String[] line) throws InvalidCodeStructureException {
+        if (!CodeFileValidator.isValidLine(line)) {
             LOGGER.error("Daemon processing aborting");
             throw new InvalidCodeStructureException();
         }
@@ -123,7 +110,7 @@ public class DaemonService {
         String vin = line[0];
         String code = line[1];
 
-        if(! CodeFileValidator.isValidVin(vin) || CodeFileValidator.isValidCode(code)) {
+        if (!CodeFileValidator.isValidVin(vin) || !CodeFileValidator.isValidCode(code)) {
             throw new InvalidCodeStructureException();
         }
 
@@ -136,5 +123,16 @@ public class DaemonService {
             throw new InvalidCodeStructureException();
         }
     }
+
+    private Consumer<Path> moveProcessedCodeFile = sourcePath -> {
+        String fileName = sourcePath.getFileName().toString();
+        Path archivePath = Path.of(config.getProcessedDir().concat("/").concat(fileName));
+
+        try {
+            Files.move(sourcePath, archivePath);
+        } catch (IOException e) {
+            LOGGER.error("Daemon could not move processed code file from " + sourcePath.toString() + " to " + archivePath);
+        }
+    };
 
 }

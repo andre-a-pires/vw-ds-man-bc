@@ -16,21 +16,27 @@ public class CodeFileValidator {
         return true;
     }
 
-    public static boolean isValidCode(String value) {
-        // TODO: validate alpha-numeric chars without regex for performance purposes
-        return value != null && value.length() > 0 && value.matches("[A-za-z0-9]+");
-    }
-
     public static boolean isValidVin(String s) throws InvalidCodeStructureException {
         // TODO: improve according to vin spec at wikipedia
         if (s == null) {
-            LOGGER.error("Null vin value");
+            LOGGER.warn("Null vin value");
             return false;
         } else if (s.length() != 17) {
-            LOGGER.error("Wrong size vin value: " + s);
+            LOGGER.warn("Wrong size vin value: " + s);
             return false;
         }
 
         return true;
     }
+
+    public static boolean isValidCode(String value) {
+        // TODO: validate alpha-numeric chars without regex for performance purposes
+        if(value == null || value.length() == 0) {
+            LOGGER.warn("Null or empty code value");
+            return false;
+        }
+
+        return value.matches("^[A-Za-z0-9]+$");
+    }
+
 }
