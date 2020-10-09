@@ -1,16 +1,19 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code;
 
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.Vehicle;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Inheritance
 @DiscriminatorColumn(name="code_type")
-@Table(name="compatibility_code")
+@Table(name = "code", indexes = {@Index(name = "index_code_value", unique = true, columnList = "value")})
 public abstract class Code {
     @Id
     @Column
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -18,6 +21,9 @@ public abstract class Code {
 
     @Column(nullable = false)
     private LocalDateTime creationDateTime;
+
+    @ManyToMany(targetEntity = Vehicle.class)
+    private Set<Vehicle> vehicles;
 
     // ORM usage
     protected Code() {}
@@ -61,4 +67,18 @@ public abstract class Code {
                 .toString();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (! (obj instanceof Code)) {
+            return false;
+        }
+
+        Code testObj = (Code) obj;
+
+        return this.getValue().equals(testObj.getValue());
+    }
 }

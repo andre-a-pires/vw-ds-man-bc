@@ -13,4 +13,5 @@ public interface VehicleRepository extends CrudRepository<Vehicle, Long> {
     Iterable<Vehicle> findAll();
 
     List<Vehicle> findByVin(String vin);
+
 }

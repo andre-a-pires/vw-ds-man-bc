@@ -34,3 +34,4 @@ out/
 .vscode/
 
 src/**/resources/code-files-to-sweep-dir
+.DS_Store
