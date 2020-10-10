@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -27,11 +28,11 @@ public class TestVehicleRepository {
         assertTrue(emptyVehicleObj.isEmpty());
 
         final Vehicle persistedVehicle = repo.save(vehicle);
-        assertTrue(persistedVehicle.getVin().equals(vehicle.getVin()));
+        assertEquals(persistedVehicle.getVin(), vehicle.getVin());
 
         final List<Vehicle> fetchedVehicles = repo.findByVin(vin);
         assert(fetchedVehicles.size() == 1);
         final Vehicle fetchedVehicle = fetchedVehicles.get(0);
-        assertTrue(fetchedVehicle.getVin().equals(persistedVehicle.getVin()));
+        assertEquals(fetchedVehicle.getVin(), persistedVehicle.getVin());
     }
 }

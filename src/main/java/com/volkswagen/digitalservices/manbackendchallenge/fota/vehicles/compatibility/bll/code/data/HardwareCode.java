@@ -9,4 +9,5 @@ public class HardwareCode extends Code {
     public HardwareCode(String code) {
         super(code);
     }
+
 }

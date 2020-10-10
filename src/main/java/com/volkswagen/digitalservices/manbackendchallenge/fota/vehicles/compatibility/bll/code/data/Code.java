@@ -3,6 +3,8 @@ package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compati
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.vehicle.data.Vehicle;
 
 import javax.persistence.*;
+import java.lang.reflect.Type;
+import java.security.KeyRep;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -80,5 +82,10 @@ public abstract class Code {
         Code testObj = (Code) obj;
 
         return this.getValue().equals(testObj.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * this.value.hashCode();
     }
 }

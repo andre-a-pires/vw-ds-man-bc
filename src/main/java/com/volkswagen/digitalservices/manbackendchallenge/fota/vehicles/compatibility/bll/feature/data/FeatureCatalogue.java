@@ -8,6 +8,8 @@ public class FeatureCatalogue {
     private static Feature c;
     private static List<Feature> catalogue;
 
+    // TODO: codes could be moved to a config file or an entity class, in another others, materialized into a more
+    //  flexible way!
     public static List<Feature> getCatalogue() {
         if (catalogue == null) {
             catalogue = List.of(getFeatureA(), getFeatureB(), getFeatureC());
