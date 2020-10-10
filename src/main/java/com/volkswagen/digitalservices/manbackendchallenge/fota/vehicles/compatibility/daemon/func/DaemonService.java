@@ -74,17 +74,13 @@ public class DaemonService {
     private Consumer<Path> parseAndPersistCodeFile = path -> {
         try (CSVReader reader = new CSVReader(new FileReader(path.toFile()))) {
             reader.iterator().forEachRemaining(line -> {
-                VinCodePair vinCodePair = null;
                 // FIXME: chained try blocks. look for try with default exception handling with straight syntax
                 try {
-                    vinCodePair = createVinCodePair(path.getFileName().toString(), line);
-                } catch (InvalidCodeStructureException e) {
-                    LOGGER.error("Daemon csv file error parsing and persisting values");
-                }
-                try {
+                    VinCodePair vinCodePair = createVinCodePair(path.getFileName().toString(), line);
+//                    LOGGER.info(vinCodePair.toString());
                     vehicleService.persistIfNew(vinCodePair);
                 } catch (InvalidCodeStructureException e) {
-                    LOGGER.error("Daemon invalid code type");
+                    LOGGER.error("Daemon csv file error parsing and persisting values");
                 }
             });
         } catch (FileNotFoundException e) {

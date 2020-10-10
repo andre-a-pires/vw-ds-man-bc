@@ -9,6 +9,9 @@ public class VinCodePair {
     private Code code;
 
     public VinCodePair(String vin, Code code) {
+        assert vin != null;
+        assert code != null;
+
         this.vin = vin;
         this.code = code;
     }
@@ -29,4 +32,8 @@ public class VinCodePair {
         return this.code instanceof HardwareCode;
     }
 
+    @Override
+    public String toString() {
+        return "VinCodePair[vin=" + vin + "vin" + ", code=" + code + "]";
+    }
 }

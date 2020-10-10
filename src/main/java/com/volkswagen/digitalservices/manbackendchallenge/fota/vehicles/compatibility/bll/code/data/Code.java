@@ -4,26 +4,29 @@ import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatib
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Inheritance
 @DiscriminatorColumn(name="code_type")
-@Table(name = "code", indexes = {@Index(name = "index_code_value", unique = true, columnList = "value")})
+@Table(name = "code", indexes = {@Index(name = "index_code_value", columnList = "value")})
 public abstract class Code {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "value")
     private String value;
 
-    @Column(nullable = false)
+    @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
 
-    @ManyToMany(targetEntity = Vehicle.class)
-    private Set<Vehicle> vehicles;
+    @ManyToMany(targetEntity = Vehicle.class,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            mappedBy = "softwareCodes")
+    private Set<Vehicle> vehicles = new HashSet<>();
 
     // ORM usage
     protected Code() {}
@@ -84,6 +87,22 @@ public abstract class Code {
 
     @Override
     public int hashCode() {
-        return 31 * this.value.hashCode();
+        if (this.getValue() != null) {
+            return 31 * this.getValue().hashCode();
+        } else {
+            return 0;
+        }
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public Set<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Set<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 }

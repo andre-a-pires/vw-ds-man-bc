@@ -6,6 +6,11 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue(CodeSpecs.Type.SOFTWARE)
 public class SoftwareCode extends Code {
+    // ORM usage
+    protected SoftwareCode() {
+        super();
+    }
+
     public SoftwareCode(String code) {
         super(code);
     }

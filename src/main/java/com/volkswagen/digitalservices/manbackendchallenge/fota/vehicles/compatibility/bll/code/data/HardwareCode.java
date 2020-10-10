@@ -6,6 +6,11 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue(CodeSpecs.Type.HARDWARE)
 public class HardwareCode extends Code {
+    // ORM usage
+    protected HardwareCode() {
+        super();
+    }
+
     public HardwareCode(String code) {
         super(code);
     }

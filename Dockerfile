@@ -4,4 +4,5 @@ ARG JAR_FILE=build/libs/man-backend-challenge-0.0.1.jar
 ARG JAR_DESTINATION_FILE=/fota-vehicles-compatibility/app.jar
 COPY ${JAR_FILE} ${JAR_DESTINATION_FILE}
 RUN mkdir -p /fota-vehicles-compatibility/code-files-to-sweep-dir/archive
+COPY src/test/resources/code-files-to-sweep-dir/soft_001.csv /fota-vehicles-compatibility/code-files-to-sweep-dir/soft_001.csv
 ENTRYPOINT ["java","-jar","/fota-vehicles-compatibility/app.jar"]

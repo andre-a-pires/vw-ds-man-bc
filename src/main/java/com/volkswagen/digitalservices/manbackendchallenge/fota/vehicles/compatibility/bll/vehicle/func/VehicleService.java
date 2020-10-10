@@ -5,6 +5,8 @@ import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatib
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.vehicle.data.Vehicle;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.data.InvalidCodeStructureException;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.data.VinCodePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class VehicleService {
+    static final Logger LOGGER = LoggerFactory.getLogger(VehicleService.class);
+
     @Autowired
     private VehicleRepository vehicleRepo;
 
@@ -24,18 +28,44 @@ public class VehicleService {
     }
 
     public Vehicle persistIfNew(VinCodePair pair) throws InvalidCodeStructureException {
-        List<Vehicle> vehicles = vehicleRepo.findByVin(pair.getVin())
-                .stream().filter(v -> (pair.isSoftwareCode() && v.getSoftwareCodes().contains(pair.getCode()))
+        List<Vehicle> vehiclesWithVin = vehicleRepo.findByVin(pair.getVin());
+
+        if (vehiclesWithVin.isEmpty()) {
+            Vehicle vehicle = new Vehicle(pair.getVin(), pair.getCode());
+            return vehicleRepo.save(vehicle);
+
+        } else {
+            assert vehiclesWithVin.size() == 1;
+
+            List<Vehicle> vehiclesWithVinAndCode = vehiclesWithVin.stream()
+                    .filter(v -> (pair.isSoftwareCode() && v.getSoftwareCodes().contains(pair.getCode()))
                         || (pair.isHardwareCode() && v.getHardwareCodes().contains(pair.getCode())))
                 .collect(Collectors.toList());
 
-        if (vehicles.isEmpty()) {
-            Vehicle vehicle = new Vehicle(pair.getVin(), pair.getCode());
-            return vehicleRepo.save(vehicle);
-        } else {
-            assert vehicles.size() == 1;
-            return vehicles.get(0);
+            if (vehiclesWithVinAndCode.size() > 0) {
+                assert vehiclesWithVinAndCode.size() == 1;
+                return vehiclesWithVinAndCode.get(0);
+
+            } else {
+                Vehicle vehicle = vehiclesWithVin.get(0);
+
+                //LOGGER.info(vehicle.toString());
+
+                if (pair.isSoftwareCode()) {
+                    vehicle.addSoftwareCode(pair.getCode());
+
+                } else if (pair.isHardwareCode()) {
+                    vehicle.addHardwareCode(pair.getCode());
+
+                } else {
+                    throw new InvalidCodeStructureException();
+                }
+                // vehicle.getSoftwareCodes().iterator().forEachRemaining(c -> LOGGER.info("Vehicle new code value=" + c.getValue()));
+                return vehicleRepo.save(vehicle);
+            }
+
         }
+
     }
 
     public Vehicle getVehicleWithVin(String vin) {

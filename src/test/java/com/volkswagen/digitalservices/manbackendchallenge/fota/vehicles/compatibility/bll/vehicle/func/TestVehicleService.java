@@ -22,15 +22,17 @@ public class TestVehicleService {
     @MockBean
     VehicleRepository vehicleRepo;
 
-    final String vin = "my-vin";
-    final Code softCode = new SoftwareCode("my-code");
-    Vehicle vehicleToPersist = new Vehicle(vin, softCode);
-
     public TestVehicleService() throws InvalidCodeStructureException {
     }
 
     @Test
     public void testPersistIfNewWhenItIsNew() throws InvalidCodeStructureException {
+        final String vin = "my-vin-1";
+        final Code softCode = new SoftwareCode("my-code-1");
+        final Vehicle vehicleToPersist = new Vehicle(vin, softCode);
+
+        when(vehicleRepo.save(any(Vehicle.class))).thenReturn(vehicleToPersist);
+
         underTest.persistIfNew(new VinCodePair(vehicleToPersist.getVin(), softCode));
 
         verify(vehicleRepo, times(1)).findByVin(vin);
@@ -39,6 +41,10 @@ public class TestVehicleService {
 
     @Test
     public void testPersistIfNewWhenItIsNotNew() throws InvalidCodeStructureException {
+        final String vin = "my-vin-2";
+        final Code softCode = new SoftwareCode("my-code-2");
+        final Vehicle vehicleToPersist = new Vehicle(vin, softCode);
+
         when(vehicleRepo.findByVin(eq(vin))).thenReturn(Lists.list(vehicleToPersist));
 
         underTest.persistIfNew(new VinCodePair(vehicleToPersist.getVin(), softCode));
