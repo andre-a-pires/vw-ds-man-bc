@@ -3,8 +3,6 @@ package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compati
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.vehicle.data.Vehicle;
 
 import javax.persistence.*;
-import java.lang.reflect.Type;
-import java.security.KeyRep;
 import java.time.LocalDateTime;
 import java.util.Set;
 
