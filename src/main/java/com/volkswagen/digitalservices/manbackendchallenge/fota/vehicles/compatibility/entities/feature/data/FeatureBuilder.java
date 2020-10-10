@@ -1,9 +1,9 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature.data;
 
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.Code;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.CodeSpecs;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.HardwareCode;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.SoftwareCode;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data.Code;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data.CodeSpecs;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data.HardwareCode;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data.SoftwareCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +14,7 @@ import java.util.Set;
 public class FeatureBuilder {
     static final Logger LOGGER = LoggerFactory.getLogger(FeatureBuilder.class);
 
+    private String name;
     private Set<Code> softwareCodesMandatory;
     private Set<Code> softwareCodesUnallowed;
     private Set<Code> hardwareCodesMandatory;
@@ -24,6 +25,11 @@ public class FeatureBuilder {
         this.softwareCodesUnallowed = new HashSet<>();
         this.hardwareCodesMandatory = new HashSet<>();
         this.hardwareCodesUnallowed = new HashSet<>();
+    }
+
+    public FeatureBuilder setName(String value) {
+        this.name = value;
+        return this;
     }
 
     public FeatureBuilder addMandatorySoftwareCode(String... codes) {
@@ -47,7 +53,10 @@ public class FeatureBuilder {
     }
 
     public Feature build() {
+        assert this.name != null;
+
         return new Feature(
+                this.name,
                 this.softwareCodesMandatory,
                 this.softwareCodesUnallowed,
                 this.hardwareCodesMandatory,
@@ -55,7 +64,6 @@ public class FeatureBuilder {
     }
 
     private void addCode(Code code, CodeSpecs.Installation installation) {
-
         // FIXME: refactor needed: pattern not ok, duplicated code
         if (code instanceof SoftwareCode) {
             switch (installation) {

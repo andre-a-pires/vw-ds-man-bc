@@ -1,4 +1,4 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.func;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.util;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.data.InvalidCodeStructureException;
 import org.slf4j.Logger;

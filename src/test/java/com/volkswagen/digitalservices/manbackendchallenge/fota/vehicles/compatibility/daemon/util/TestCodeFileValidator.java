@@ -1,6 +1,7 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.func;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.util;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.data.InvalidCodeStructureException;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.util.CodeFileValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -1,9 +1,12 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.func;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.data.InvalidCodeStructureException;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.data.VinCodePair;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.Code;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.SoftwareCode;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data.Code;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data.SoftwareCode;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.api.VehicleRepository;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.data.Vehicle;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.func.VehicleService;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

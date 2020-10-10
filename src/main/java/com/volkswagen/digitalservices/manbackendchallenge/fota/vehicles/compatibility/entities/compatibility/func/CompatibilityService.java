@@ -1,10 +1,10 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.compatibility.func;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.compatibility.data.VehicleNotFoundException;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature.Feature;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature.FeatureCatalogue;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.Vehicle;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.VehicleService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature.data.Feature;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature.data.FeatureCatalogue;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.data.Vehicle;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.func.VehicleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

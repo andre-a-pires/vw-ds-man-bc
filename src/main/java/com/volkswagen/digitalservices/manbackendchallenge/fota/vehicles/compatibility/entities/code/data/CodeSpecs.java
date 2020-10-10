@@ -1,4 +1,4 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data;
 
 public final class CodeSpecs {
     // TODO: convert to enum

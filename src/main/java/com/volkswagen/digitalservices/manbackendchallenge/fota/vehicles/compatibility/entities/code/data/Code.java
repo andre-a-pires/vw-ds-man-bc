@@ -1,6 +1,6 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data;
 
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.Vehicle;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.data.Vehicle;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

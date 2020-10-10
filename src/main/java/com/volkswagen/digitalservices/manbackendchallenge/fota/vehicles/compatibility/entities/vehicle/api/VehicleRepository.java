@@ -1,5 +1,6 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.api;
 
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.data.Vehicle;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.RestfulCompatibilityService;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 
-import static com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func.RestfulCompatibilityService.OK_BODY;
+import static com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.RestfulCompatibilityService.OK_BODY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

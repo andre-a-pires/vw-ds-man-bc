@@ -1,4 +1,4 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

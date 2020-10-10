@@ -1,6 +1,6 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature.data;
 
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.Code;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.code.data.Code;
 
 import java.util.Set;
 
