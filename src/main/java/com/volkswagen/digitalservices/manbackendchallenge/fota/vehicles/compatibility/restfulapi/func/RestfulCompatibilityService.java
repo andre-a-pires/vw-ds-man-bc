@@ -1,4 +1,4 @@
-package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi;
+package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.compatibility.data.VehicleNotFoundException;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.compatibility.func.CompatibilityService;
@@ -21,9 +21,6 @@ public final class RestfulCompatibilityService {
     static final Logger LOGGER = LoggerFactory.getLogger(RestfulCompatibilityService.class);
 
     public static final String OK_BODY = "status ok!";
-
-    @Autowired
-    VehicleService vehicleService;
 
     @Autowired
     CompatibilityService compatibilityService;
@@ -51,11 +48,11 @@ public final class RestfulCompatibilityService {
     public ResponseEntity getIncompatible(@PathVariable String vin) {
         LOGGER.info("New request on " + Paths.VEHICLES + "/" + vin + VEHICLES_INCOMPATIBLE);
 
-        if (!vehicleService.vehicleExists(vin)) {
+        try {
+            return ResponseEntity.ok(compatibilityService.getIncompatibleFeatures(vin));
+        } catch (VehicleNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.ok("Vehicles incompatible request with vin=" + vin);
     }
 
 }
