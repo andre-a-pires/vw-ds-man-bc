@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,7 +25,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-@Controller
+@Service
 public class DaemonService {
     static final Logger LOGGER = LoggerFactory.getLogger(DaemonService.class);
     static final String SOFTWARE_CODE_FILE_NAME_PREFIX = "soft_";

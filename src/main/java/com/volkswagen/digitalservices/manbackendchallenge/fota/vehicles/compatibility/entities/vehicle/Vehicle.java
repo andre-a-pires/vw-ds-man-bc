@@ -19,7 +19,7 @@ public class Vehicle {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "vin", nullable = false, unique = true)
     private String vin;
 
     @Column(nullable = false)
