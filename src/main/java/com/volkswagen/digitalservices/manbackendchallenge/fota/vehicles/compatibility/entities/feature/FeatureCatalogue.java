@@ -1,11 +1,22 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.feature;
 
-public class FeatureCatalog {
-    private Feature a;
-    private Feature b;
-    private Feature c;
+import java.util.List;
 
-    public Feature getFeatureA() {
+public class FeatureCatalogue {
+    private static Feature a;
+    private static Feature b;
+    private static Feature c;
+    private static List<Feature> catalogue;
+
+    public static List<Feature> getCatalogue() {
+        if (catalogue == null) {
+            catalogue = List.of(getFeatureA(), getFeatureB(), getFeatureC());
+        }
+
+        return catalogue;
+    }
+
+    private static Feature getFeatureA() {
         if (a == null) {
             a = new FeatureBuilder()
                     .addMandatorySoftwareCode(
@@ -21,7 +32,7 @@ public class FeatureCatalog {
         return a;
     }
 
-    public Feature getFeatureB() {
+    private static Feature getFeatureB() {
         if (b == null) {
             b = new FeatureBuilder()
                     .addMandatorySoftwareCode(
@@ -37,7 +48,7 @@ public class FeatureCatalog {
         return b;
     }
 
-    public Feature getFeatureC() {
+    private static Feature getFeatureC() {
         if (c == null) {
             c = new FeatureBuilder()
                     .addMandatorySoftwareCode(

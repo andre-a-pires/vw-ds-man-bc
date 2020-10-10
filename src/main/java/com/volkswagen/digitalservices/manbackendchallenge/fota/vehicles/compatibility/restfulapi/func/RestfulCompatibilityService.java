@@ -1,7 +1,8 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.func;
 
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.conf.DaemonConfiguration;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.VehicleCompatibilityService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.compatibility.data.VehicleNotFoundException;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.compatibility.func.CompatibilityService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.VehicleService;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +17,16 @@ import static com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.c
 
 @RestController
 @RequestMapping(Paths.VEHICLES)
-public final class CompatibilityService {
-    static final Logger LOGGER = LoggerFactory.getLogger(CompatibilityService.class);
+public final class RestfulCompatibilityService {
+    static final Logger LOGGER = LoggerFactory.getLogger(RestfulCompatibilityService.class);
 
     public static final String OK_BODY = "status ok!";
 
     @Autowired
-    VehicleCompatibilityService service;
+    VehicleService vehicleService;
 
     @Autowired
-    private DaemonConfiguration config;
+    CompatibilityService compatibilityService;
 
     @GetMapping(VEHICLES_STATUS)
     public ResponseEntity getValue() {
@@ -33,23 +34,24 @@ public final class CompatibilityService {
         return ResponseEntity.ok(OK_BODY);
     }
 
+    // TODO: create DTOs for rest response bodies
+
     @GetMapping("/{vin}" + VEHICLES_INSTALLABLE)
     public ResponseEntity getInstallable(@PathVariable String vin) {
         LOGGER.info("New request on " + Paths.VEHICLES + "/" + vin + VEHICLES_INSTALLABLE);
 
-        if (!service.vehicleExists(vin)) {
-            LOGGER.info("Requested vehicle with vin=" + vin + " does not exist");
+        try {
+            return ResponseEntity.ok(compatibilityService.getInstallableFeatures(vin));
+        } catch (VehicleNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.ok("Vehicles installable request with vin=" + vin);
     }
 
     @GetMapping("/{vin}" + VEHICLES_INCOMPATIBLE)
     public ResponseEntity getIncompatible(@PathVariable String vin) {
         LOGGER.info("New request on " + Paths.VEHICLES + "/" + vin + VEHICLES_INCOMPATIBLE);
 
-        if (!service.vehicleExists(vin)) {
+        if (!vehicleService.vehicleExists(vin)) {
             return ResponseEntity.notFound().build();
         }
 

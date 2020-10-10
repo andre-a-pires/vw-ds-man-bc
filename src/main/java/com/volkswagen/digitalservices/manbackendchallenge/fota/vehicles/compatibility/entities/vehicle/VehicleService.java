@@ -17,6 +17,10 @@ public class VehicleService {
     @Autowired
     private CodeRepository codeRepo;
 
+    public boolean vehicleExists(String vin) {
+        return !vehicleRepo.findByVin(vin).isEmpty();
+    }
+
     public Vehicle persistIfNew(VinCodePair pair) throws InvalidCodeStructureException {
         List<Vehicle> vehicles = vehicleRepo.findByVin(pair.getVin())
                 .stream().filter(v -> (pair.isSoftwareCode() && v.getSoftwareCodes().contains(pair.getCode()))
