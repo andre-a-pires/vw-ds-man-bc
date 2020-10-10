@@ -1,8 +1,8 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi;
 
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.compatibility.data.VehicleNotFoundException;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.compatibility.func.CompatibilityService;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.entities.vehicle.func.VehicleService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.compatibility.data.VehicleNotFoundException;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.compatibility.func.CompatibilityService;
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.vehicle.func.VehicleService;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.restfulapi.conf.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
