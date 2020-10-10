@@ -10,6 +10,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 8QYRjyZGxMUyT3KhGX
   app:
+    image: man-backend-challenge-app-layer
     build: .
     ports:
       - 8080:8080
