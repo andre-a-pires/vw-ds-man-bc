@@ -125,10 +125,14 @@ public class DaemonService {
     };
 
     private Consumer<Path> handleCodeFile = path -> {
+        LOGGER.info("Started handling file " + path.getFileName().toString());
+
         mutex.lock();
         parseAndPersistCodeFile.accept(path);
         moveProcessedCodeFile.accept(path);
         mutex.unlock();
+
+        LOGGER.info("Finished handling file " + path.getFileName().toString());
     };
 
 }

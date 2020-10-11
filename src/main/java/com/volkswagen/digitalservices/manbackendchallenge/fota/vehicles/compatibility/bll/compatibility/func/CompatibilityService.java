@@ -1,5 +1,6 @@
 package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.compatibility.func;
 
+import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.code.data.Code;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.compatibility.data.VehicleNotFoundException;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.feature.data.Feature;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.feature.data.FeatureCatalogue;
@@ -34,10 +35,10 @@ public class CompatibilityService {
 
         return catalogue.stream()
                 .filter(f -> vehicle.getSoftwareCodes().containsAll(f.getMandatorySoftwareCodes()))
-                .filter(f -> vehicle.getSoftwareCodes().retainAll(f.getForbiddenSoftwareCodes()) && vehicle.getSoftwareCodes().isEmpty())
+                .filter(f -> { Set<Code> codes = vehicle.getSoftwareCodes(); codes.retainAll(f.getForbiddenSoftwareCodes()); return codes.size() == 0;})
                 .filter(f -> vehicle.getHardwareCodes().containsAll(f.getMandatoryHardwareCodes()))
-                .filter(f -> vehicle.getHardwareCodes().retainAll(f.getForbiddenHardwareCodes()) && vehicle.getHardwareCodes().isEmpty())
-                .map(f -> f.getName())
+                .filter(f -> { Set<Code> codes = vehicle.getHardwareCodes(); codes.retainAll(f.getForbiddenHardwareCodes()); return codes.size() == 0;})
+                .map(Feature::getName)
                 .collect(Collectors.toSet());
     }
 

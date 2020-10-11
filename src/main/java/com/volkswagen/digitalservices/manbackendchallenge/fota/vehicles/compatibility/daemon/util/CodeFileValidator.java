@@ -16,7 +16,7 @@ public class CodeFileValidator {
         return true;
     }
 
-    public static boolean isValidVin(String s) throws InvalidCodeStructureException {
+    public static boolean isValidVin(String s) {
         // TODO: improve according to vin spec at wikipedia
         if (s == null) {
             LOGGER.warn("Null vin value");

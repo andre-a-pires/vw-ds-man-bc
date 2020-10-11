@@ -49,18 +49,8 @@ public class VehicleService {
             } else {
                 Vehicle vehicle = vehiclesWithVin.get(0);
 
-                //LOGGER.info(vehicle.toString());
+                vehicle.addCode(pair.getCode());
 
-                if (pair.isSoftwareCode()) {
-                    vehicle.addSoftwareCode(pair.getCode());
-
-                } else if (pair.isHardwareCode()) {
-                    vehicle.addHardwareCode(pair.getCode());
-
-                } else {
-                    throw new InvalidCodeStructureException();
-                }
-                // vehicle.getSoftwareCodes().iterator().forEachRemaining(c -> LOGGER.info("Vehicle new code value=" + c.getValue()));
                 return vehicleRepo.save(vehicle);
             }
 

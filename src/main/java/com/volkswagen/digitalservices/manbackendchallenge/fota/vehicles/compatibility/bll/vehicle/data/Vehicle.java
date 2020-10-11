@@ -3,7 +3,6 @@ package com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compati
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.code.data.Code;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.code.data.HardwareCode;
 import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.bll.code.data.SoftwareCode;
-import com.volkswagen.digitalservices.manbackendchallenge.fota.vehicles.compatibility.daemon.data.InvalidCodeStructureException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,42 +33,23 @@ public class Vehicle {
     }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE} )
-    @JoinTable(name = "vehicle_code_software",
+    @JoinTable(name = "vehicle_code",
             joinColumns = { @JoinColumn(name="vehicle_id") },
             inverseJoinColumns = {@JoinColumn(name="code_id")})
-    private Set<Code> softwareCodes = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "vehicle_code_hardware",
-            joinColumns = { @JoinColumn(name="vehicle_id") },
-            inverseJoinColumns = {@JoinColumn(name="code_id")})
-    private Set<Code> hardwareCodes = new HashSet<>();
+    private Set<Code> codes = new HashSet<>();
 
     protected Vehicle() {}
 
-    public Vehicle(String vin, Code code) throws InvalidCodeStructureException {
+    public Vehicle(String vin, Code code) {
         this.vin = vin;
         this.creationDateTime = LocalDateTime.now();
-        if (code instanceof SoftwareCode) {
-            this.softwareCodes.add(new SoftwareCode(code.getValue()));
-        } else if (code instanceof HardwareCode) {
-            this.hardwareCodes.add(new SoftwareCode(code.getValue()));
-        } else {
-            throw new InvalidCodeStructureException("Unsupported code type!");
-        }
+        this.codes.add(code);
     }
 
-    public Vehicle(String vin, Set<? extends Code> codes) {
+    public Vehicle(String vin, Set<Code> codes) {
         this.vin = vin;
         this.creationDateTime = LocalDateTime.now();
-        this.softwareCodes = codes.stream()
-                .filter(c -> c instanceof SoftwareCode)
-                .map(c -> new SoftwareCode(c.getValue()))
-                .collect(Collectors.toSet());
-        this.hardwareCodes = codes.stream()
-                .filter(c -> c instanceof HardwareCode)
-                .map(c -> new HardwareCode(c.getValue()))
-                .collect(Collectors.toSet());
+        this.codes = codes;
     }
 
     public String getVin() {
@@ -77,19 +57,15 @@ public class Vehicle {
     }
 
     public Set<Code> getSoftwareCodes() {
-        return softwareCodes;
+        return codes.stream().filter(c -> c instanceof SoftwareCode).collect(Collectors.toSet());
     }
 
     public Set<Code> getHardwareCodes() {
-        return hardwareCodes;
+        return codes.stream().filter(c -> c instanceof HardwareCode).collect(Collectors.toSet());
     }
 
-    public void addSoftwareCode(Code code) {
-        this.getSoftwareCodes().add(code);
-    }
-
-    public void addHardwareCode(Code code) {
-        this.getHardwareCodes().add(code);
+    public void addCode(Code code) {
+        this.codes.add(code);
     }
 
     @Override
@@ -108,19 +84,4 @@ public class Vehicle {
         return id;
     }
 
-    public LocalDateTime getCreationDateTime() {
-        return creationDateTime;
-    }
-
-    public void setCreationDateTime(LocalDateTime creationDateTime) {
-        this.creationDateTime = creationDateTime;
-    }
-
-    public void setSoftwareCodes(Set<Code> softwareCodes) {
-        this.softwareCodes = softwareCodes;
-    }
-
-    public void setHardwareCodes(Set<Code> hardwareCodes) {
-        this.hardwareCodes = hardwareCodes;
-    }
 }

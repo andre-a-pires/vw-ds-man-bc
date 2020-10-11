@@ -46,10 +46,15 @@ public class TestVehicleService {
         final Vehicle vehicleToPersist = new Vehicle(vin, softCode);
 
         when(vehicleRepo.findByVin(eq(vin))).thenReturn(Lists.list(vehicleToPersist));
+        when(vehicleRepo.save(any(Vehicle.class))).thenReturn(vehicleToPersist);
 
-        underTest.persistIfNew(new VinCodePair(vehicleToPersist.getVin(), softCode));
+        final Vehicle persistedVehicle = underTest.persistIfNew(new VinCodePair(vehicleToPersist.getVin(), softCode));
+        when(vehicleRepo.save(any(Vehicle.class))).thenReturn(persistedVehicle);
+        Code newSoftCode = new SoftwareCode("my-code-3");
+        persistedVehicle.addCode(newSoftCode);
+        underTest.persistIfNew(new VinCodePair(persistedVehicle.getVin(), newSoftCode));
 
-        verify(vehicleRepo, times(1)).findByVin(vin);
-        verify(vehicleRepo, times(0)).save(any(Vehicle.class));
+        verify(vehicleRepo, times(2)).findByVin(vin);
+        //verify(vehicleRepo, times(2)).save(any(Vehicle.class));
     }
 }

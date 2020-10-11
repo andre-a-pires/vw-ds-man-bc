@@ -17,7 +17,7 @@ public abstract class Code {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "value")
+    @Column(name = "value", unique = true)
     private String value;
 
     @Column(name = "creation_date_time")
@@ -25,7 +25,7 @@ public abstract class Code {
 
     @ManyToMany(targetEntity = Vehicle.class,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            mappedBy = "softwareCodes")
+            mappedBy = "codes")
     private Set<Vehicle> vehicles = new HashSet<>();
 
     // ORM usage
@@ -87,11 +87,7 @@ public abstract class Code {
 
     @Override
     public int hashCode() {
-        if (this.getValue() != null) {
-            return 31 * this.getValue().hashCode();
-        } else {
-            return 0;
-        }
+        return 31 * this.getValue().hashCode();
     }
 
     public LocalDateTime getCreationDateTime() {
